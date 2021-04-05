@@ -1,5 +1,5 @@
 % Potret Fase Model Mangsa Pemangsa
-
+% Membersihkan window
 clear all; close all; clc
 [x1, x2] = meshgrid(-0.2:0.2:3, -0.2:.2:3);
 
