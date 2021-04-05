@@ -1,5 +1,4 @@
- % Solusi Model Mangsa Pemangsa
-
+% Solusi Model Mangsa Pemangsa
 % Membersihkan window
 clear all; close all; clc
 
