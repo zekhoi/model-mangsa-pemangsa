@@ -1,32 +1,44 @@
-% Potret Fase Model Mangsa Pemangsa
+% Solusi Model Mangsa Pemangsa
+
 % Membersihkan window
 clear all; close all; clc
-[x1, x2] = meshgrid(-0.2:0.2:3, -0.2:.2:3);
 
-% Plot isoclines dan lintasan bidang fase tertutup untuk memodelkan sistem persamaan Mangsa-Pemangsa Lotka-Volterra:
-x1dot = x1 - x2 .*x1;
-x2dot = x1 .* x2 - x2;
+%inisialisasi nilai pada variabel
+n = 50;
+m = 40;
+a1 = 0.2;
+a2 = 0.3;
+b11 = 0.004;
+b12 = 0.004;
+b21 = 0.006;
+b22 = 0.006;
 
-% Membuat plot vektor dengan quiver
+t0 = 0;
+tfinal = 50;
+
+
+% Menggunakan ode45/ode23 untuk menyelesaikan persamaan diferensial 
+
+waktu = [t0 tfinal];
+y0 = [n; m];
+
+[t,y] = ode45(@(t,y) [y(1)*(a1-b11*y(1)-b12*y(2)); y(2)*(a2-b21*y(1)-b22*y(2));], waktu, y0);
+
+
+% Membuat plot populasi terhadap waktu
 figure (1);
-quiver(x1,x2,x1dot, x2dot, 'r')
+plot(t,y)
+title('Populasi N/M Terhadap Waktu')
+xlabel('Waktu')
+ylabel('Populasi')
+legend('N','M','Location','North')
 
 
-% Mendefinisikan model Mangsa-Pemangsa Lotka-Volterra System
-f = @(t,y) [y(1) - y(1)*y(2); y(1)*y(2) - y(2)];
+% Membuat plot populasi satu sama lain yang membuat hubungan siklik antar populasi menjadi jelas
+figure (2);
+plot(y(:,1),y(:,2))
+title('Phase Plane Plot')
+xlabel('Populasi N')
+ylabel('Populasi M')
 
-hold on
 
-% Menghitung fase potrait untuk kondisi awal yang berbeda dan plot lintasan fase dari loop tertutup
-for y0=0:.7:2.8
-	[ts, ys] = ode45(f,[0, 8], [y0/2, y0]);
-
-	plot(ys(:,1), ys(:,2),'k','Linewidth',2.0)
-	plot(ys(1,1),ys(1,2),'go','Linewidth',2.0) % starting point
-	plot(ys(end,1),ys(end,2),'rs','Linewidth',2.0) % ending point
-end
-
-hold off
-
-xlabel('x')
-ylabel('y')
